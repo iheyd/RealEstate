@@ -1,0 +1,157 @@
+/* ==========================================
+   dashboard_estates.css
+   Стили для страницы "Мои объявления"
+   в личном кабинете администратора
+   ========================================== */
+
+/* Заголовок с кнопкой */
+.estates-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.estates-header h2 {
+    margin: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Сетка карточек */
+.estates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Карточка объявления */
+.estate-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    transition: box-shadow 0.3s, transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+}
+
+.estate-card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* Изображение сверху */
+.estate-card-image {
+    width: 100%;
+    height: 180px;
+    background: #f5f5f5;
+    position: relative;
+    overflow: hidden;
+}
+
+.estate-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.estate-card-image .no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #999;
+    font-size: 14px;
+}
+
+/* Контент */
+.estate-card-content {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.estate-card-content h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.1em;
+    color: #2c3e50;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.estate-card-content .price {
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #0054FD;
+    margin-bottom: 8px;
+}
+
+.estate-card-content .details {
+    font-size: 0.85em;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.estate-card-content .description {
+    font-size: 0.85em;
+    color: #888;
+    line-height: 1.4;
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+.estate-card-content .status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.estate-card-content .status-available {
+    background: #d4edda;
+    color: #155724;
+}
+
+.estate-card-content .status-rented {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Пустое состояние */
+.estates-empty {
+    text-align: center;
+    padding: 50px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #666;
+}
+
+.estates-empty p {
+    margin-bottom: 20px;
+    font-size: 1.05em;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .estates-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .estates-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .estates-header .btn-submit {
+        text-align: center;
+    }
+}

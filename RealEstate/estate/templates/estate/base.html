@@ -1,0 +1,44 @@
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Пространство{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'estate/css/base.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'estate/images/icon-blue.png' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <div class="menu">
+            <img src="{% static 'estate/images/icon-white.png' %}" alt="Логотип" class="menu-icon">
+            <a href="{% url 'home' %}">Главная</a>
+            <a href="{% url 'listings' %}">Предложения</a>
+            <a href="{% url 'reviews' %}">Отзывы</a>
+        </div>
+        <div class="auth">
+            {% if user.is_authenticated %}
+                <!-- Теперь просто ник пользователя -->
+                <span class="username">{{ user.username }}</span>
+                <a href="{% url 'dashboard_profile' %}" class="auth-btn">Профиль</a>
+                <!-- Кнопка "Выйти" удалена по вашему запросу -->
+            {% else %}
+                <a href="{% url 'login' %}" class="auth-btn">Войти</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

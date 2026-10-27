@@ -24,17 +24,25 @@ def listings(request):
 
     if location:
         estates = estates.filter(location__icontains=location)
+
+    # Безопасная обработка фильтров (защита от ввода букв вместо чисел)
     if area_min:
-        estates = estates.filter(area__gte=float(area_min))
+        try:
+            estates = estates.filter(area__gte=float(area_min))
+        except ValueError:
+            pass
+
     if price_min:
-        estates = estates.filter(price__gte=float(price_min))
+        try:
+            estates = estates.filter(price__gte=float(price_min))
+        except ValueError:
+            pass
 
     estates = estates.order_by('-created_at')
     return render(request, 'estate/listings.html', {'estates': estates})
 
 
 def listing_detail(request, estate_id):
-    """Детальная страница одного объявления"""
     estate = get_object_or_404(RealEstate, id=estate_id)
     return render(request, 'estate/listing_detail.html', {'estate': estate})
 
@@ -47,7 +55,7 @@ def reviews(request):
                 subject=f"Отзыв от {form.cleaned_data['name']}",
                 message=form.cleaned_data['message'],
                 from_email=form.cleaned_data['email'],
-                recipient_list=['admin@example.com'],
+                recipient_list=['admin@example.com'],  # Замените на реальный email при деплое
                 fail_silently=False,
             )
             return redirect('feedback_success')
@@ -163,7 +171,6 @@ def add_estate(request):
             estate.owner = request.user
             estate.save()
 
-            # Сохраняем изображения
             for img_form in formset:
                 if img_form.cleaned_data.get('image'):
                     image = img_form.save(commit=False)
@@ -195,13 +202,11 @@ def edit_estate(request, estate_id):
         if form.is_valid() and formset.is_valid():
             estate = form.save()
 
-            # Сохраняем изображения
             instances = formset.save(commit=False)
             for image in instances:
                 image.estate = estate
                 image.save()
 
-            # Удаляем отмеченные для удаления
             for obj in formset.deleted_objects:
                 obj.delete()
 

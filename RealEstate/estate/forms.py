@@ -1,38 +1,57 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import RealEstate, ViewingRequest, Profile, LeaseAgreement
+from django.contrib.auth.forms import UserCreationForm
+from .models import Profile, RealEstate, ViewingRequest, RealEstateImage
 
-class UserRegisterForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_confirm = forms.CharField(widget=forms.PasswordInput, label="Подтвердите пароль")
-    role = forms.ChoiceField(choices=Profile.ROLE_CHOICES, label="Роль")
+
+class UserRegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True, label='Почта')
+    first_name = forms.CharField(max_length=30, required=True, label='Имя')
+    last_name = forms.CharField(max_length=30, required=True, label='Фамилия')
+    phone = forms.CharField(max_length=20, required=False, label='Номер телефона')
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name']
+        fields = ('username', 'email', 'first_name', 'last_name', 'phone', 'password1', 'password2')
 
-    def clean(self):
-        cleaned_data = super().clean()
-        if cleaned_data.get('password') != cleaned_data.get('password_confirm'):
-            raise forms.ValidationError("Пароли не совпадают!")
-        return cleaned_data
 
-class RealEstateForm(forms.ModelForm):
+class UserEditForm(forms.ModelForm):
     class Meta:
-        model = RealEstate
-        fields = ['title', 'description', 'area', 'location', 'price']
+        model = User
+        fields = ('first_name', 'last_name', 'email')
 
-class ViewingRequestForm(forms.ModelForm):
-    class Meta:
-        model = ViewingRequest
-        fields = ['estate', 'viewing_date']
 
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['phone']
+        fields = ('phone',)
+
+
+class RealEstateForm(forms.ModelForm):
+    class Meta:
+        model = RealEstate
+        fields = ['title', 'description', 'area', 'floor', 'location', 'price', 'status']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Опишите преимущества объекта...'}),
+        }
+
+
+class RealEstateImageForm(forms.ModelForm):
+    class Meta:
+        model = RealEstateImage
+        fields = ['image', 'is_main']
+
+
+class ViewingRequestForm(forms.ModelForm):
+    class Meta:
+        model = ViewingRequest
+        fields = ['viewing_date']
+        widgets = {
+            'viewing_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+
 
 class FeedbackForm(forms.Form):
-    name = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    message = forms.CharField(widget=forms.Textarea)
+    name = forms.CharField(max_length=100, label='Ваше имя')
+    email = forms.EmailField(label='Ваш Email')
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4}), label='Сообщение')

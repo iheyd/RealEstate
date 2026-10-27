@@ -1,0 +1,35 @@
+{% extends 'estate/dashboard_base.html' %}
+{% block title %}Заявки на просмотр{% endblock %}
+{% block dashboard_content %}
+    <h2>Заявки на просмотр</h2>
+    {% if requests_list %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Объект</th>
+                    {% if user.profile.role == 'admin' %}<th>Клиент</th>{% endif %}
+                    <th>Дата запроса</th>
+                    <th>Желаемая дата</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests_list %}
+                    <tr>
+                        <td>{{ req.estate.title }}</td>
+                        {% if user.profile.role == 'admin' %}<td>{{ req.client.username }}</td>{% endif %}
+                        <td>{{ req.request_date|date:"d.m.Y H:i" }}</td>
+                        <td>{{ req.viewing_date|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            <span class="status-badge status-{{ req.status }}">
+                                {{ req.get_status_display }}
+                            </span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Заявок пока нет.</p>
+    {% endif %}
+{% endblock %}

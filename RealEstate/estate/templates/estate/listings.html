@@ -1,10 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'estate/base.html' %}
+{% load static %}
+
+{% block title %}Предложения недвижимости{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/listings.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Актуальные предложения</h1>
+
+    <!-- Форма фильтрации -->
+    <form method="get" class="filter-form">
+        <div class="filter-row">
+            <div class="form-group">
+                <label>Местоположение</label>
+                <input type="text" name="location" value="{{ request.GET.location }}" placeholder="Например: Москва">
+            </div>
+            <div class="form-group">
+                <label>Мин. площадь (кв.м)</label>
+                <input type="number" name="area_min" value="{{ request.GET.area_min }}" placeholder="От">
+            </div>
+            <div class="form-group">
+                <label>Мин. цена (руб.)</label>
+                <input type="number" name="price_min" value="{{ request.GET.price_min }}" placeholder="От">
+            </div>
+            <div class="form-group filter-buttons">
+                <button type="submit" class="btn-submit">Фильтровать</button>
+                <a href="{% url 'listings' %}" class="btn-submit" style="background-color: #95a5a6; text-decoration: none; text-align: center; display: inline-block;">Сбросить</a>
+            </div>
+        </div>
+    </form>
+
+    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+    <!-- СПИСОК КАРТОЧЕК (на всю ширину) -->
+    <div class="listings-list">
+        {% for estate in estates %}
+            <a href="{% url 'listing_detail' estate.id %}" class="listing-card">
+                <div class="listing-card-image">
+                    {% if estate.images.first %}
+                        <img src="{{ estate.images.first.image.url }}" alt="{{ estate.title }}">
+                    {% else %}
+                        <div class="no-image">Нет фото</div>
+                    {% endif %}
+                    {% if estate.is_reserved %}
+                        <span class="badge-reserved">Резерв</span>
+                    {% endif %}
+                </div>
+                <div class="listing-card-content">
+                    <h3>{{ estate.title }}</h3>
+                    <div class="price">{{ estate.price|floatformat:0 }} ₽</div>
+                    <div class="details">
+                        📐 {{ estate.area }} м² &nbsp;|&nbsp; 🏢 {{ estate.floor }} этаж &nbsp;|&nbsp; 📍 {{ estate.location }}
+                    </div>
+                    <div class="description">{{ estate.description|truncatewords:30 }}</div>
+                </div>
+            </a>
+        {% empty %}
+            <p style="text-align: center; padding: 40px; color: #888;">По вашему запросу ничего не найдено.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

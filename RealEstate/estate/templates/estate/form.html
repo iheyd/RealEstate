@@ -1,0 +1,59 @@
+{% extends 'estate/base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <h1 class="auth-title">{{ title }}</h1>
+
+        {% if success_message %}
+            <p class="auth-subtitle">{{ success_message }}</p>
+            <a href="{% url 'dashboard_profile' %}" class="btn-submit auth-submit">
+                Вернуться в профиль
+            </a>
+
+        {% elif form %}
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small class="helptext">{{ field.help_text|safe }}</small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn-submit auth-submit">Сохранить</button>
+            </form>
+
+            <p class="auth-footer">
+                <a href="{% url 'dashboard_profile' %}">← Вернуться в профиль</a>
+            </p>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

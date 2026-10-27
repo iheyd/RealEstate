@@ -1,0 +1,50 @@
+{% extends 'estate/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Мои объявления{% endblock %}
+
+{% block extra_css %}
+    <!-- Подключаем стили меню из dashboard.css -->
+    <link rel="stylesheet" href="{% static 'estate/css/dashboard.css' %}">
+    <!-- Подключаем специфичные стили для этой страницы -->
+    <link rel="stylesheet" href="{% static 'estate/css/dashboard_estates.css' %}">
+{% endblock %}
+
+{% block dashboard_content %}
+    <div class="estates-header">
+        <h2>Мои объявления</h2>
+        <a href="{% url 'add_estate' %}" class="btn-submit">+ Создать объявление</a>
+    </div>
+
+    {% if estates %}
+        <div class="estates-grid">
+            {% for estate in estates %}
+                <a href="{% url 'listing_detail' estate.id %}" class="estate-card">
+                    <div class="estate-card-image">
+                        {% if estate.images.first %}
+                            <img src="{{ estate.images.first.image.url }}" alt="{{ estate.title }}">
+                        {% else %}
+                            <div class="no-image">Нет фото</div>
+                        {% endif %}
+                    </div>
+                    <div class="estate-card-content">
+                        <h3>{{ estate.title }}</h3>
+                        <div class="price">{{ estate.price|floatformat:0 }} ₽</div>
+                        <div class="details">
+                            📐 {{ estate.area }} м² &nbsp;|&nbsp; 🏢 {{ estate.floor }} этаж
+                        </div>
+                        <div class="description">{{ estate.description|truncatewords:15 }}</div>
+                        <span class="status {% if estate.status == 'available' %}status-available{% else %}status-rented{% endif %}">
+                            {{ estate.get_status_display }}
+                        </span>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="estates-empty">
+            <p>У вас пока нет объявлений.</p>
+            <a href="{% url 'add_estate' %}" class="btn-submit">+ Создать первое объявление</a>
+        </div>
+    {% endif %}
+{% endblock %}

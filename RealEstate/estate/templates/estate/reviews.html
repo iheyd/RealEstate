@@ -1,0 +1,15 @@
+{% extends 'estate/base.html' %}
+{% block title %}Отзывы и обратная связь{% endblock %}
+{% block content %}
+    <h1>Отзывы наших клиентов</h1>
+    <p>Мы ценим ваше мнение! Оставьте свой отзыв или предложение, и мы обязательно его рассмотрим.</p>
+
+    <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-top: 30px;">
+        <h3>Форма обратной связи</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-submit">Отправить отзыв</button>
+        </form>
+    </div>
+{% endblock %}

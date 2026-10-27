@@ -1,17 +1,51 @@
 {% extends 'estate/base.html' %}
+{% load static %}
+
 {% block title %}Вход в систему{% endblock %}
+
+{% block extra_css %}
+    <!-- Общие стили карточки и полей -->
+    <link rel="stylesheet" href="{% static 'estate/css/register.css' %}">
+    <!-- Доработки именно для страницы входа -->
+    <link rel="stylesheet" href="{% static 'estate/css/login.css' %}">
+{% endblock %}
+
 {% block content %}
-    <h2>Вход в систему</h2>
+<div class="auth-wrapper">
+    <div class="auth-card login-card">
 
-    {% if form.errors %}
-        <p style="color: red;">Неверное имя пользователя или пароль.</p>
-    {% endif %}
+        <h1 class="auth-title">Вход</h1>
+        <p class="auth-subtitle">Войдите в аккаунт, чтобы продолжить работу с недвижимостью.</p>
 
-    <form method="post" style="max-width: 400px;">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn-submit">Войти</button>
-    </form>
+        {% if form.errors %}
+            <div class="form-errors">
+                <p>Неверный логин или пароль. Попробуйте ещё раз.</p>
+            </div>
+        {% endif %}
 
-    <p style="margin-top: 20px;">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Логин</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Пароль</label>
+                {{ form.password }}
+            </div>
+
+            <!-- Возвращает пользователя туда, откуда он пришёл -->
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <button type="submit" class="btn-submit auth-submit">Войти</button>
+        </form>
+
+        <p class="auth-footer">
+            Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a>
+        </p>
+
+    </div>
+</div>
 {% endblock %}

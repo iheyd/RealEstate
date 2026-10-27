@@ -1,0 +1,258 @@
+/* ==========================================
+   form_estate.css
+   Стили для формы создания/редактирования
+   объявления
+   ========================================== */
+
+.estate-form-wrapper {
+    max-width: 800px;
+}
+
+.estate-form-wrapper h2 {
+    margin-bottom: 25px;
+}
+
+/* Секции формы */
+.form-section {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.form-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 1.2em;
+    border-bottom: 2px solid #0054FD;
+    padding-bottom: 8px;
+}
+
+.form-section .section-hint {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Поля формы */
+.estate-form-wrapper .form-group {
+    margin-bottom: 18px;
+}
+
+.estate-form-wrapper .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.estate-form-wrapper .form-group input[type="text"],
+.estate-form-wrapper .form-group input[type="number"],
+.estate-form-wrapper .form-group select,
+.estate-form-wrapper .form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.estate-form-wrapper .form-group input:focus,
+.estate-form-wrapper .form-group select:focus,
+.estate-form-wrapper .form-group textarea:focus {
+    outline: none;
+    border-color: #0054FD;
+    box-shadow: 0 0 0 3px rgba(0, 84, 253, 0.1);
+}
+
+.estate-form-wrapper .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Подсказки */
+.estate-form-wrapper .helptext {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #888;
+    line-height: 1.5;
+}
+
+/* Ошибки */
+.estate-form-wrapper .errorlist {
+    color: #e74c3c;
+    list-style-type: none;
+    padding: 0;
+    margin: 6px 0 0 0;
+    font-size: 13px;
+}
+
+.estate-form-wrapper .errorlist li {
+    padding: 3px 0;
+}
+
+/* Две колонки для коротких полей */
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+/* ==========================================
+   ФОРМСЕТ (ЗАГРУЗКА ФОТОГРАФИЙ)
+   ========================================== */
+.photo-formset {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.photo-form-item {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 15px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.2s;
+}
+
+.photo-form-item:hover {
+    border-color: #0054FD;
+}
+
+.photo-form-item .photo-field {
+    flex: 1;
+}
+
+.photo-form-item .photo-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #333;
+}
+
+.photo-form-item .photo-field input[type="file"] {
+    font-size: 13px;
+}
+
+.photo-form-item .checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+}
+
+.photo-form-item .checkbox-field input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.photo-form-item .checkbox-field label {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+}
+
+.photo-form-item .delete-field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+}
+
+.photo-form-item .delete-field input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.photo-form-item .delete-field label {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #e74c3c;
+    cursor: pointer;
+}
+
+/* Предпросмотр загруженного фото */
+.photo-preview {
+    width: 80px;
+    height: 60px;
+    border-radius: 4px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+/* ==========================================
+   КНОПКИ ДЕЙСТВИЙ
+   ========================================== */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.form-actions .btn-submit {
+    min-width: 180px;
+}
+
+.form-actions .cancel-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.form-actions .cancel-link:hover {
+    color: #0054FD;
+    text-decoration: underline;
+}
+
+/* ==========================================
+   АДАПТИВНОСТЬ
+   ========================================== */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .photo-form-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .photo-form-item .checkbox-field,
+    .photo-form-item .delete-field {
+        padding: 5px 0;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-actions .btn-submit {
+        width: 100%;
+        text-align: center;
+    }
+}

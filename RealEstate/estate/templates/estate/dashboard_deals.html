@@ -1,0 +1,27 @@
+{% extends 'estate/dashboard_base.html' %}
+{% block title %}Сделки{% endblock %}
+{% block dashboard_content %}
+    <h2>Мои сделки (Договоры аренды)</h2>
+    {% if deals %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Объект</th>
+                    <th>Начало аренды</th>
+                    <th>Конец аренды</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for deal in deals %}
+                    <tr>
+                        <td>{{ deal.estate.title }}</td>
+                        <td>{{ deal.start_date|date:"d.m.Y" }}</td>
+                        <td>{{ deal.end_date|date:"d.m.Y" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>У вас пока нет заключенных договоров.</p>
+    {% endif %}
+{% endblock %}

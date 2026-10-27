@@ -1,0 +1,353 @@
+/* ==========================================
+   home.css
+   Стили для главной страницы (home.html)
+   ========================================== */
+
+/* ==========================================
+   ОБЩИЕ СЕКЦИИ
+   ========================================== */
+.home-section {
+    padding: 80px 0;
+}
+
+.bg-light {
+    background-color: #f8f9fa;
+}
+
+.bg-dark {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.section-title {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: #0054FD;
+}
+
+.text-white.section-title::after {
+    background-color: #ffffff;
+}
+
+/* ==========================================
+   КНОПКИ
+   ========================================== */
+.btn-primary {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #0054FD;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #003DB8;
+    color: #ffffff;
+}
+
+.btn-outline {
+    display: inline-block;
+    padding: 10px 25px;
+    border: 2px solid #0054FD;
+    color: #0054FD;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-outline:hover {
+    background-color: #0054FD;
+    color: #ffffff;
+}
+
+.btn-text {
+    color: #0054FD;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.btn-text:hover {
+    color: #003DB8;
+}
+
+/* ==========================================
+   HERO SECTION (Главные новости)
+   ========================================== */
+.home-hero {
+    padding: 40px 0;
+}
+
+.hero-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.hero-item {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    align-items: flex-end;
+    transition: transform 0.3s;
+}
+
+.hero-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 60%);
+}
+
+.hero-item:hover {
+    transform: translateY(-5px);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 30px;
+    color: #ffffff;
+}
+
+.hero-tag {
+    display: inline-block;
+    background-color: #0054FD;
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.hero-content h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.hero-content h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.hero-content p {
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+/* ==========================================
+   СЕТКИ КАРТОЧЕК (Предложения и Новости)
+   ========================================== */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* Карточки предложений */
+.offer-card {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+    height: 220px;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.card-body h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.card-body p {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* Карточки новостей */
+.news-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    border-left: 4px solid #0054FD;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+}
+
+.news-date {
+    font-size: 0.85em;
+    color: #888;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.news-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    line-height: 1.4;
+}
+
+.news-card p {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   БЛОК "О НАС"
+   ========================================== */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.about-text p {
+    font-size: 1.1em;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.about-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #0054FD;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.about-contacts h3 {
+    font-size: 1.5em;
+    margin-bottom: 25px;
+    color: #2c3e50;
+}
+
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contact-list li {
+    margin-bottom: 25px;
+    font-size: 1.05em;
+    line-height: 1.6;
+    color: #333;
+}
+
+.contact-list strong {
+    color: #0054FD;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.contact-list a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact-list a:hover {
+    color: #0054FD;
+}
+
+/* ==========================================
+   АДАПТИВНОСТЬ (МОБИЛЬНЫЕ УСТРОЙСТВА)
+   ========================================== */
+@media (max-width: 768px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-item {
+        min-height: 300px;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .about-stats {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .section-title {
+        font-size: 1.8em;
+    }
+
+    .home-section {
+        padding: 50px 0;
+    }
+}

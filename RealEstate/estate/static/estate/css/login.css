@@ -1,0 +1,30 @@
+/* ==========================================
+   login.css
+   Только отличия страницы входа от регистрации.
+   Общие стили (.auth-card, .form-group и т.д.)
+   уже загружаются из register.css.
+   ========================================== */
+
+/* Карточка входа уже, чем карточка регистрации */
+.login-card {
+    max-width: 420px;
+    text-align: center;
+}
+
+.login-card .auth-title {
+    font-size: 1.7em;
+}
+
+.login-card .auth-subtitle {
+    margin-bottom: 28px;
+}
+
+/* Поля оставляем выровненными по левому краю */
+.login-card .form-group {
+    text-align: left;
+}
+
+/* Ошибка также по левому краю */
+.login-card .form-errors {
+    text-align: left;
+}

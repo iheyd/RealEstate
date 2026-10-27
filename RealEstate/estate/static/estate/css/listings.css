@@ -1,0 +1,162 @@
+/* ==========================================
+   listings.css
+   Стили для публичной страницы предложений
+   ========================================== */
+
+/* Фильтр */
+.filter-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    margin-bottom: 30px;
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.filter-row .form-group {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 0;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    min-width: 250px;
+}
+
+.filter-buttons .btn-submit {
+    flex: 1;
+}
+
+/* ==========================================
+   СПИСОК ОБЪЯВЛЕНИЙ (на всю ширину)
+   ========================================== */
+.listings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Карточка объявления — на всю ширину */
+.listing-card {
+    display: flex;
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    transition: box-shadow 0.3s, transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+}
+
+.listing-card:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* Изображение слева */
+.listing-card-image {
+    flex: 0 0 300px;
+    width: 300px;
+    height: 220px;
+    background: #f5f5f5;
+    position: relative;
+    overflow: hidden;
+}
+
+.listing-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.listing-card-image .no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #999;
+    font-size: 14px;
+    background: #f5f5f5;
+}
+
+.badge-reserved {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #ff4444;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* Контент справа */
+.listing-card-content {
+    flex: 1;
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.listing-card-content h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.3em;
+    color: #2c3e50;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.listing-card-content .price {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #0054FD;
+    margin-bottom: 10px;
+}
+
+.listing-card-content .details {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+.listing-card-content .description {
+    font-size: 0.95em;
+    color: #666;
+    line-height: 1.5;
+    flex: 1;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .listing-card {
+        flex-direction: column;
+    }
+
+    .listing-card-image {
+        flex: 0 0 auto;
+        width: 100%;
+        height: 220px;
+    }
+
+    .filter-row {
+        flex-direction: column;
+    }
+
+    .filter-row .form-group,
+    .filter-buttons {
+        width: 100%;
+        min-width: 100%;
+    }
+}

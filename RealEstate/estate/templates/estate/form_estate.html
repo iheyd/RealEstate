@@ -1,0 +1,128 @@
+{% extends 'estate/base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/form_estate.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="estate-form-wrapper">
+    <h2>{{ title }}</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- ОСНОВНАЯ ИНФОРМАЦИЯ -->
+        <div class="form-section">
+            <h3>📋 Основная информация</h3>
+
+            <div class="form-group">
+                <label for="id_title">Название</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <ul class="errorlist">{% for e in form.title.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_area">Площадь (м²)</label>
+                    {{ form.area }}
+                    {% if form.area.errors %}
+                        <ul class="errorlist">{% for e in form.area.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_floor">Этаж</label>
+                    {{ form.floor }}
+                    {% if form.floor.errors %}
+                        <ul class="errorlist">{% for e in form.floor.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_location">Местоположение</label>
+                {{ form.location }}
+                {% if form.location.errors %}
+                    <ul class="errorlist">{% for e in form.location.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_price">Цена (₽)</label>
+                    {{ form.price }}
+                    {% if form.price.errors %}
+                        <ul class="errorlist">{% for e in form.price.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_status">Статус</label>
+                    {{ form.status }}
+                    {% if form.status.errors %}
+                        <ul class="errorlist">{% for e in form.status.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_description">Описание</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <ul class="errorlist">{% for e in form.description.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                {% endif %}
+                <small class="helptext">Расскажите подробнее об объекте: особенности планировки, ремонт, инфраструктура рядом.</small>
+            </div>
+        </div>
+
+        <!-- ФОТОГРАФИИ -->
+        <div class="form-section">
+            <h3>📷 Фотографии объекта</h3>
+            <p class="section-hint">
+                Загрузите несколько фотографий. Отметьте одно из них как «Главное» — оно будет отображаться в списке объявлений.
+            </p>
+
+            {{ formset.management_form }}
+
+            <div class="photo-formset">
+                {% for img_form in formset %}
+                    <div class="photo-form-item">
+                        <div class="photo-field">
+                            <label>Фото {{ forloop.counter }}</label>
+                            {{ img_form.image }}
+                            {% if img_form.image.errors %}
+                                <ul class="errorlist">
+                                    {% for error in img_form.image.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="checkbox-field">
+                            {{ img_form.is_main }}
+                            <label for="{{ img_form.is_main.id_for_label }}">Главное</label>
+                        </div>
+
+                        {% if img_form.instance.pk %}
+                            <div class="delete-field">
+                                {{ img_form.DELETE }}
+                                <label for="{{ img_form.DELETE.id_for_label }}">Удалить</label>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- КНОПКИ -->
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">💾 Сохранить</button>
+            <a href="{% url 'dashboard_estates' %}" class="cancel-link">← Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

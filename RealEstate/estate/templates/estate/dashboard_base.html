@@ -1,0 +1,58 @@
+{% extends 'estate/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- ЛЕВОЕ МЕНЮ -->
+    <aside class="sidebar">
+        <h3>Личный кабинет</h3>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="{% url 'dashboard_profile' %}"
+                   class="{% if active_tab == 'profile' %}active{% endif %}">
+                    👤 Мой профиль
+                </a>
+            </li>
+
+            {% if user.profile.role == 'admin' %}
+            <li>
+                <a href="{% url 'dashboard_estates' %}"
+                   class="{% if active_tab == 'estates' %}active{% endif %}">
+                    🏠 Объявления
+                </a>
+            </li>
+            {% endif %}
+
+            <li>
+                <a href="{% url 'dashboard_requests' %}"
+                   class="{% if active_tab == 'requests' %}active{% endif %}">
+                    📋 Заявки на просмотр
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'dashboard_deals' %}"
+                   class="{% if active_tab == 'deals' %}active{% endif %}">
+                    📄 Сделки
+                </a>
+            </li>
+
+            <li class="logout-item">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">🚪 Выйти</button>
+                </form>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ПРАВЫЙ КОНТЕНТ -->
+    <main class="main-content">
+        {% block dashboard_content %}{% endblock %}
+    </main>
+</div>
+{% endblock %}

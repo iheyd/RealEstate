@@ -1,10 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'estate/base.html' %}
+{% load static %}
+
+{% block title %}Главная - Пространство{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- 1. ГЛАВНЫЕ НОВОСТИ (Hero Section) -->
+<section class="home-hero">
+    <div class="container-fluid hero-container">
+        <!-- Большая новость -->
+        <div class="hero-item hero-item-large" style="background-image: url('{% static 'estate/images/home1.png' %}');">
+            <div class="hero-content">
+                <span class="hero-tag">Главное</span>
+                <h2>Старт продаж нового жилого комплекса «Северный»</h2>
+                <p>Современная архитектура, закрытые дворы и панорамные виды на город.</p>
+                <a href="#" class="btn-primary">Узнать подробнее</a>
+            </div>
+        </div>
+        <!-- Маленькая новость -->
+        <div class="hero-item hero-item-small" style="background-image: url('{% static 'estate/images/home2.png' %}');">
+            <div class="hero-content">
+                <span class="hero-tag">Акция</span>
+                <h3>Скидка 5% при полной оплате до конца месяца</h3>
+                <a href="#" class="btn-text">Читать далее →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2. НАШИ ПРЕДЛОЖЕНИЯ -->
+<section class="home-section bg-light">
+    <div class="container">
+        <h2 class="section-title">Наши предложения</h2>
+        <div class="cards-grid">
+            <!-- Карточка 1 -->
+            <div class="offer-card">
+                <div class="card-image" style="background-image: url('{% static 'estate/images/home3.png' %}');"></div>
+                <div class="card-body">
+                    <h3>Квартиры в новостройках</h3>
+                    <p>От студий до просторных четырехкомнатных квартир в лучших районах города.</p>
+                    <a href="{% url 'listings' %}" class="btn-outline">Смотреть варианты</a>
+                </div>
+            </div>
+            <!-- Карточка 2 -->
+            <div class="offer-card">
+                <div class="card-image" style="background-image: url('{% static 'estate/images/home4.png' %}');"></div>
+                <div class="card-body">
+                    <h3>Загородная недвижимость</h3>
+                    <p>Уютные дома и коттеджи в экологически чистых пригородных поселках.</p>
+                    <a href="{% url 'listings' %}" class="btn-outline">Смотреть варианты</a>
+                </div>
+            </div>
+            <!-- Карточка 3 -->
+            <div class="offer-card">
+                <div class="card-image" style="background-image: url('{% static 'estate/images/home5.png' %}');"></div>
+                <div class="card-body">
+                    <h3>Коммерческие помещения</h3>
+                    <p>Офисы и торговые площади с высоким пешеходным трафиком для вашего бизнеса.</p>
+                    <a href="{% url 'listings' %}" class="btn-outline">Смотреть варианты</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. НОВОСТИ КОМПАНИИ -->
+<section class="home-section">
+    <div class="container">
+        <h2 class="section-title">Новости компании</h2>
+        <div class="cards-grid">
+            <article class="news-card">
+                <div class="news-date">15 Октября 2026</div>
+                <h3>Мы открыли новый офис продаж в центре города</h3>
+                <p>Приглашаем вас посетить наш новый шоурум, где представлены макеты всех наших проектов.</p>
+            </article>
+            <article class="news-card">
+                <div class="news-date">10 Октября 2026</div>
+                <h3>ЖК «Парковый» получил награду «Лучшая архитектура года»</h3>
+                <p>Жюри высоко оценило экологичность и инновационные решения нашего нового комплекса.</p>
+            </article>
+            <article class="news-card">
+                <div class="news-date">01 Октября 2026</div>
+                <h3>Изменение ипотечных программ для молодых семей</h3>
+                <p>Мы совместно с ведущими банками запустили новую программу с пониженной ставкой.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- 4. О НАС -->
+<section class="home-section">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-text">
+                <h2 class="section-title">О нас</h2>
+                <p>Мы создаем не просто квадратные метры, а комфортную среду для жизни. С 2011 года наша компания является одним из лидеров рынка недвижимости, сдав в эксплуатацию более 50 жилых комплексов.</p>
+                <p>Наша миссия - делать качественное жилье доступным, а городскую среду - безопасной и современной.</p>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">15</span>
+                        <span class="stat-label">лет на рынке</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">сданных объектов</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">15 000</span>
+                        <span class="stat-label">счастливых семей</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-contacts">
+                <h3>Контакты</h3>
+                <ul class="contact-list">
+                    <li>
+                        <strong>Адрес:</strong><br>
+                        г. Москва, ул. Примерная, д. 10, офис 305
+                    </li>
+                    <li>
+                        <strong>Телефон:</strong><br>
+                        <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+                    </li>
+                    <li>
+                        <strong>Email:</strong><br>
+                        <a href="mailto:info@prostranstvo.ru">info@prostranstvo.ru</a>
+                    </li>
+                    <li>
+                        <strong>Режим работы:</strong><br>
+                        Пн-Пт: 9:00 - 20:00<br>
+                        Сб-Вс: 10:00 - 18:00
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
