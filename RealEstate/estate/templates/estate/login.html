@@ -1,0 +1,17 @@
+{% extends 'estate/base.html' %}
+{% block title %}Вход в систему{% endblock %}
+{% block content %}
+    <h2>Вход в систему</h2>
+
+    {% if form.errors %}
+        <p style="color: red;">Неверное имя пользователя или пароль.</p>
+    {% endif %}
+
+    <form method="post" style="max-width: 400px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-submit">Войти</button>
+    </form>
+
+    <p style="margin-top: 20px;">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+{% endblock %}
