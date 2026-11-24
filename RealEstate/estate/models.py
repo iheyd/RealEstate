@@ -63,6 +63,21 @@ class RealEstate(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def main_image(self):
+        """Главное фото (is_main=True), иначе первое по порядку."""
+        return self.images.filter(is_main=True).first() or self.images.first()
+
+    @property
+    def ordered_images(self):
+        """Фото в порядке: главное первым, остальные по ID."""
+        images = list(self.images.all())
+        main = self.main_image
+        if main:
+            images.remove(main)
+            images.insert(0, main)
+        return images
+
     def is_reserved(self):
         return self.viewingrequest_set.filter(status__in=['pending', 'confirmed']).exists()
 

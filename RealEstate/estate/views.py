@@ -85,7 +85,10 @@ def listings(request):
 def listing_detail(request, estate_id):
     estate = get_object_or_404(RealEstate, id=estate_id)
 
-    context = {'estate': estate}
+    context = {
+        'estate': estate,
+        'gallery_images': estate.ordered_images,
+    }
 
     # Если пользователь авторизован — проверяем его заявки на этот объект
     if request.user.is_authenticated:
@@ -332,9 +335,11 @@ def edit_estate(request, estate_id):
             estate.images.update(is_main=False)
 
             main_ids = request.POST.getlist('main_image')
-            if main_ids:
-                estate.images.filter(id__in=main_ids).update(is_main=True)
+            main_qs = estate.images.filter(id__in=main_ids)
+            if main_qs.exists():
+                main_qs.update(is_main=True)
             elif estate.images.exists():
+                # Главное фото было удалено — назначаем первое доступное
                 estate.images.first().is_main = True
                 estate.images.first().save()
 
@@ -351,7 +356,7 @@ def edit_estate(request, estate_id):
         'form': form,
         'title': 'Редактировать объект',
         'estate': estate,
-        'existing_images': estate.images.all()
+        'existing_images': estate.ordered_images
     })
 
 

@@ -19,27 +19,27 @@
             </div>
 
             <div class="listing-gallery">
-                {% if estate.images.all %}
+                {% if gallery_images %}
                     <div class="gallery-main-wrapper">
                         <img id="mainImage" class="gallery-main-image"
-                             src="{{ estate.images.first.image.url }}"
+                             src="{{ gallery_images.0.image.url }}"
                              alt="{{ estate.title }}">
 
-                        {% if estate.images.all|length > 1 %}
+                        {% if gallery_images|length > 1 %}
                             <div class="gallery-photo-count">
-                                📷 {{ estate.images.all|length }} фото
+                                📷 {{ gallery_images|length }} фото
                             </div>
                         {% endif %}
 
-                        {% if estate.images.all|length > 1 %}
+                        {% if gallery_images|length > 1 %}
                             <button class="gallery-nav gallery-nav-prev" id="prevBtn" type="button">‹</button>
                             <button class="gallery-nav gallery-nav-next" id="nextBtn" type="button">›</button>
                         {% endif %}
                     </div>
 
-                    {% if estate.images.all|length > 1 %}
+                    {% if gallery_images|length > 1 %}
                         <div class="gallery-thumbnails" id="thumbnails">
-                            {% for img in estate.images.all %}
+                            {% for img in gallery_images %}
                                 <img src="{{ img.image.url }}"
                                      class="gallery-thumb {% if forloop.first %}active{% endif %}"
                                      data-index="{{ forloop.counter0 }}"

@@ -43,8 +43,8 @@
 
                 <a href="{% url 'listing_detail' estate.id %}" class="listing-card">
                     <div class="listing-card-image">
-                        {% if estate.images.first %}
-                            <img src="{{ estate.images.first.image.url }}" alt="{{ estate.title }}">
+                        {% if estate.main_image %}
+                            <img src="{{ estate.main_image.image.url }}" alt="{{ estate.title }}">
                         {% else %}
                             <div class="no-image">Нет фото</div>
                         {% endif %}
