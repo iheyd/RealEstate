@@ -1,27 +1,50 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Profile(models.Model):
     ROLE_CHOICES = (
-        ('admin', 'Администратор'),
         ('client', 'Клиент'),
+        ('owner', 'Владелец'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='client')
+    is_approved = models.BooleanField("Подтвержден", default=True)
     phone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Телефон")
 
     def __str__(self):
-        return f"{self.user.username} ({self.get_role_display()})"
+        if self.role == 'owner':
+            status = "✅" if self.is_approved else "⏳ На модерации"
+            return f"{self.user.username} (Владелец) {status}"
+        return f"{self.user.username} (Клиент)"
+
+    @property
+    def can_login(self):
+        """Может ли пользователь войти в систему."""
+        return self.role == 'client' or self.is_approved
 
 
 class RealEstate(models.Model):
     STATUS_CHOICES = (
         ('available', 'Свободно'),
         ('rented', 'Сдано'),
+    )
+    UTILITIES_CHOICES = (
+        ('included', 'Включена'),
+        ('not_included', 'Не включена'),
+    )
+    PREPAYMENT_CHOICES = (
+        ('none', 'Отсутствует'),
+        ('1_month', '1 месяц'),
+        ('3_months', '3 месяца'),
+    )
+    LEASE_TERM_CHOICES = (
+        ('month', 'Месяц'),
+        ('from_month', 'От месяца'),
+        ('from_3_months', 'От трех месяцев'),
+        ('from_half_year', 'От полугода'),
+        ('from_year', 'От года'),
     )
     title = models.CharField("Название", max_length=150)
     description = models.TextField("Описание")
@@ -30,7 +53,11 @@ class RealEstate(models.Model):
     location = models.CharField("Местоположение", max_length=200)
     price = models.DecimalField("Цена", max_digits=12, decimal_places=2)
     status = models.CharField("Статус", max_length=20, choices=STATUS_CHOICES, default='available')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Администратор", related_name="estates")
+    utilities_included = models.CharField("Оплата ЖКХ", max_length=20, choices=UTILITIES_CHOICES, default='included')
+    deposit = models.DecimalField("Залог", max_digits=12, decimal_places=0, default=0)
+    prepayment = models.CharField("Предоплата", max_length=20, choices=PREPAYMENT_CHOICES, default='1_month')
+    lease_term = models.CharField("Срок аренды", max_length=20, choices=LEASE_TERM_CHOICES, default='from_year')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", related_name="estates")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -41,7 +68,6 @@ class RealEstate(models.Model):
 
 
 class RealEstateImage(models.Model):
-    """Модель для хранения нескольких фотографий одного объекта"""
     estate = models.ForeignKey(RealEstate, on_delete=models.CASCADE, related_name='images', verbose_name="Объект")
     image = models.ImageField("Фотография", upload_to='estates/%Y/%m/')
     is_main = models.BooleanField("Главное фото", default=False)
@@ -55,6 +81,7 @@ class ViewingRequest(models.Model):
         ('pending', 'Ожидание'),
         ('confirmed', 'Подтверждено'),
         ('rejected', 'Отклонено'),
+        ('cancelled', 'Отменено'),
     )
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requests', verbose_name="Клиент")
     estate = models.ForeignKey(RealEstate, on_delete=models.CASCADE, verbose_name="Объект")
@@ -75,20 +102,3 @@ class LeaseAgreement(models.Model):
 
     def __str__(self):
         return f"Договор: {self.estate.title} - {self.client.username}"
-
-
-# ==========================================
-# СИГНАЛЫ (Автоматическое создание профиля)
-# ==========================================
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        # Если создается суперпользователь, даем ему роль админа, иначе клиента
-        role = 'admin' if instance.is_superuser else 'client'
-        Profile.objects.create(user=instance, role=role)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    if hasattr(instance, 'profile'):
-        instance.profile.save()

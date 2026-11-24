@@ -1,23 +1,45 @@
 {% extends 'estate/dashboard_base.html' %}
+{% load static %}
+
 {% block title %}Заявки на просмотр{% endblock %}
+
+{% block dashboard_page_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/dashboard_requests.css' %}">
+{% endblock %}
+
 {% block dashboard_content %}
     <h2>Заявки на просмотр</h2>
+
     {% if requests_list %}
-        <table class="data-table">
+        <table class="requests-table">
             <thead>
                 <tr>
                     <th>Объект</th>
-                    {% if user.profile.role == 'admin' %}<th>Клиент</th>{% endif %}
+                    {% if user.profile.role == 'owner' and user.profile.is_approved %}
+                        <th>Клиент</th>
+                    {% endif %}
                     <th>Дата запроса</th>
                     <th>Желаемая дата</th>
                     <th>Статус</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
                 {% for req in requests_list %}
                     <tr>
-                        <td>{{ req.estate.title }}</td>
-                        {% if user.profile.role == 'admin' %}<td>{{ req.client.username }}</td>{% endif %}
+                        <td>
+                            <a href="{% url 'listing_detail' req.estate.id %}" class="object-link">
+                                {{ req.estate.title }}
+                            </a>
+                        </td>
+
+                        {% if user.profile.role == 'owner' and user.profile.is_approved %}
+                            <td>
+                                <div>{{ req.client.get_full_name|default:req.client.username }}</div>
+                                <div class="client-info">{{ req.client.email }}</div>
+                            </td>
+                        {% endif %}
+
                         <td>{{ req.request_date|date:"d.m.Y H:i" }}</td>
                         <td>{{ req.viewing_date|date:"d.m.Y H:i" }}</td>
                         <td>
@@ -25,11 +47,68 @@
                                 {{ req.get_status_display }}
                             </span>
                         </td>
+
+                        <td>
+                            <div class="action-buttons">
+                                {% if user.profile.role == 'owner' and user.profile.is_approved %}
+                                    {% if req.status == 'pending' %}
+                                        <form method="post" action="{% url 'confirm_request' req.id %}" class="action-form">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-action btn-confirm" onclick="return confirm('Подтвердить заявку?')">
+                                                ✓ Подтвердить
+                                            </button>
+                                        </form>
+                                        <form method="post" action="{% url 'reject_request' req.id %}" class="action-form">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-action btn-reject" onclick="return confirm('Отклонить заявку?')">
+                                                ✗ Отклонить
+                                            </button>
+                                        </form>
+                                    {% elif req.status == 'confirmed' %}
+                                        <form method="post" action="{% url 'cancel_request' req.id %}" class="action-form">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-action btn-cancel" onclick="return confirm('Отменить бронирование? Клиент получит уведомление.')">
+                                                ✕ Отменить бронь
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <span class="action-placeholder">—</span>
+                                    {% endif %}
+                                {% else %}
+                                    {% if req.status == 'pending' %}
+                                        <form method="post" action="{% url 'cancel_request' req.id %}" class="action-form">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-action btn-cancel" onclick="return confirm('Отменить заявку?')">
+                                                ✕ Отменить заявку
+                                            </button>
+                                        </form>
+                                    {% elif req.status == 'confirmed' %}
+                                        <form method="post" action="{% url 'cancel_request' req.id %}" class="action-form">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-action btn-cancel" onclick="return confirm('Отменить резерв? Квартира снова станет доступной для других.')">
+                                                ✕ Отменить резерв
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <span class="action-placeholder">—</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>Заявок пока нет.</p>
+        <div class="no-requests">
+            {% if user.profile.role == 'owner' and user.profile.is_approved %}
+                <p>У вас пока нет заявок на просмотр ваших объектов.</p>
+            {% else %}
+                <p>Вы ещё не подавали заявки на просмотр.</p>
+                <a href="{% url 'listings' %}" class="btn-submit">
+                    Посмотреть объекты
+                </a>
+            {% endif %}
+        </div>
     {% endif %}
 {% endblock %}

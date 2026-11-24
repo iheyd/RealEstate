@@ -4,21 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17f498b3-6ea4-4bf0-b69d-638a51668d4b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/pythonProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pythonProject.iml" afterDir="false" />
+    <list default="true" id="17f498b3-6ea4-4bf0-b69d-638a51668d4b" name="Changes" comment="123">
+      <change afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/dashboard_moderation.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/gallery_editor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/listing_detail.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/dashboard_moderation.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RealEstate/RealEstate/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/RealEstate/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RealEstate/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealEstate/estate/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/base.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/dashboard_estates.css" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/dashboard_estates.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/form_estate.css" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/form_estate.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/home.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/listings.css" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/listings.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/register.css" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/static/estate/css/register.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/dashboard_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/dashboard_base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/dashboard_deals.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/dashboard_deals.html" afterDir="false" />
@@ -27,7 +27,6 @@
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/dashboard_requests.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/dashboard_requests.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/form.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/form_estate.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/form_estate.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/listing_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/listing_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/listings.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/listings.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RealEstate/estate/templates/estate/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/RealEstate/estate/templates/estate/login.html" afterDir="false" />
@@ -51,21 +50,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "iheyd"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;iheyd&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/iheyd/RealState.git",
-    "accountId": "e558462c-ac86-448c-9142-13a996962d63"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/iheyd/RealState.git&quot;,
+    &quot;accountId&quot;: &quot;e558462c-ac86-448c-9142-13a996962d63&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="3LEMOh7X1Nl05oXQ1i0P4UuOPt4" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -79,7 +78,7 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "http.proxy"
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -104,6 +103,19 @@
       <option name="presentableId" value="Default" />
       <updated>1793014744089</updated>
     </task>
+    <task id="LOCAL-00001" summary="123">
+      <option name="closed" value="true" />
+      <created>1793067710633</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1793067710633</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="123" />
+    <option name="LAST_COMMIT_MESSAGE" value="123" />
   </component>
 </project>

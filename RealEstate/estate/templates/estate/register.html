@@ -4,15 +4,17 @@
 {% block title %}Регистрация{% endblock %}
 
 {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/auth.css' %}">
     <link rel="stylesheet" href="{% static 'estate/css/register.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="auth-wrapper">
     <div class="auth-card register-card">
-
         <h1 class="auth-title">Регистрация</h1>
-        <p class="auth-subtitle">Создайте аккаунт, чтобы смотреть объекты и записываться на просмотр.</p>
+        <p class="auth-subtitle">
+            Клиенты получают доступ сразу. Владельцам нужно подтверждение администратора.
+        </p>
 
         {% if form.non_field_errors %}
             <div class="form-errors">
@@ -28,7 +30,18 @@
             {% for field in form %}
                 <div class="form-group {% if field.errors %}has-error{% endif %}">
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
+
+                    {% if field.name == 'role' %}
+                        <div class="role-radios">
+                            {% for radio in field %}
+                                <label>
+                                    {{ radio.tag }} {{ radio.choice_label }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
 
                     {% if field.help_text %}
                         <small class="helptext">{{ field.help_text|safe }}</small>
@@ -46,7 +59,6 @@
         <p class="auth-footer">
             Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
         </p>
-
     </div>
 </div>
 {% endblock %}

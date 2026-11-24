@@ -3,10 +3,7 @@
 
 {% block title %}Мои объявления{% endblock %}
 
-{% block extra_css %}
-    <!-- Подключаем стили меню из dashboard.css -->
-    <link rel="stylesheet" href="{% static 'estate/css/dashboard.css' %}">
-    <!-- Подключаем специфичные стили для этой страницы -->
+{% block dashboard_page_css %}
     <link rel="stylesheet" href="{% static 'estate/css/dashboard_estates.css' %}">
 {% endblock %}
 

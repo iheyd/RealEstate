@@ -1,0 +1,69 @@
+{% extends 'estate/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Модерация владельцев{% endblock %}
+
+{% block dashboard_page_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/dashboard_moderation.css' %}">
+{% endblock %}
+
+{% block dashboard_content %}
+    <h2>🛡️ Модерация владельцев</h2>
+    <p class="moderation-subtitle">
+        Здесь вы можете одобрять или отклонять заявки на регистрацию в качестве владельца недвижимости.
+    </p>
+
+    <section class="moderation-section">
+        <h3>⏳ Ожидают подтверждения <span class="count-badge">{{ pending_owners|length }}</span></h3>
+
+        {% if pending_owners %}
+            <div class="moderation-list">
+                {% for profile in pending_owners %}
+                <div class="moderation-card pending">
+                    <div class="moderation-info">
+                        <div class="moderation-name">{{ profile.user.get_full_name|default:profile.user.username }}</div>
+                        <div class="moderation-login">Логин: {{ profile.user.username }}</div>
+                        <div class="moderation-email">📧 {{ profile.user.email|default:"не указан" }}</div>
+                        <div class="moderation-phone">📞 {{ profile.phone|default:"не указан" }}</div>
+                    </div>
+                    <div class="moderation-actions">
+                        <form method="post" action="{% url 'approve_owner' profile.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-approve">✓ Одобрить</button>
+                        </form>
+                        <form method="post" action="{% url 'reject_owner' profile.id %}"
+                              onsubmit="return confirm('Удалить аккаунт {{ profile.user.username }}?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-reject">✗ Отклонить</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="moderation-empty">✅ Новых заявок на модерацию нет.</div>
+        {% endif %}
+    </section>
+
+    <section class="moderation-section">
+        <h3>✅ Одобренные владельцы <span class="count-badge approved">{{ approved_owners|length }}</span></h3>
+
+        {% if approved_owners %}
+            <div class="moderation-list">
+                {% for profile in approved_owners %}
+                <div class="moderation-card approved">
+                    <div class="moderation-info">
+                        <div class="moderation-name">{{ profile.user.get_full_name|default:profile.user.username }}</div>
+                        <div class="moderation-login">Логин: {{ profile.user.username }}</div>
+                        <div class="moderation-email">📧 {{ profile.user.email|default:"не указан" }}</div>
+                        <div class="moderation-phone">📞 {{ profile.phone|default:"не указан" }}</div>
+                    </div>
+                    <div class="moderation-status">✅ Доступ открыт</div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="moderation-empty">Пока нет одобренных владельцев.</div>
+        {% endif %}
+    </section>
+{% endblock %}

@@ -10,9 +10,16 @@ class UserRegisterForm(UserCreationForm):
     last_name = forms.CharField(max_length=30, required=True, label='Фамилия')
     phone = forms.CharField(max_length=20, required=False, label='Номер телефона')
 
+    role = forms.ChoiceField(
+        choices=Profile.ROLE_CHOICES,
+        label='Я хочу зарегистрироваться как',
+        widget=forms.RadioSelect,
+        initial='client'
+    )
+
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'phone', 'password1', 'password2')
+        fields = ('username', 'email', 'first_name', 'last_name', 'phone', 'role', 'password1', 'password2')
 
 
 class UserEditForm(forms.ModelForm):
@@ -30,16 +37,14 @@ class ProfileEditForm(forms.ModelForm):
 class RealEstateForm(forms.ModelForm):
     class Meta:
         model = RealEstate
-        fields = ['title', 'description', 'area', 'floor', 'location', 'price', 'status']
+        fields = [
+            'title', 'description', 'area', 'floor', 'location', 'price', 'status',
+            'utilities_included', 'deposit', 'prepayment', 'lease_term',
+        ]
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Опишите преимущества объекта...'}),
+            'deposit': forms.NumberInput(attrs={'min': 0, 'placeholder': 'Сумма залога в рублях'}),
         }
-
-
-class RealEstateImageForm(forms.ModelForm):
-    class Meta:
-        model = RealEstateImage
-        fields = ['image', 'is_main']
 
 
 class ViewingRequestForm(forms.ModelForm):

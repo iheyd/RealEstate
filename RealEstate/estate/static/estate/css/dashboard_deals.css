@@ -1,0 +1,14 @@
+/* ==========================================
+   dashboard_deals.css
+   Стили для страницы "Сделки" в личном кабинете
+   ========================================== */
+
+.deals-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #888;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 15px;
+}

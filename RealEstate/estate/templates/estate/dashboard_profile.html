@@ -1,6 +1,11 @@
 {% extends 'estate/dashboard_base.html' %}
+{% load static %}
 
 {% block title %}Мой профиль{% endblock %}
+
+{% block dashboard_page_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/dashboard_profile.css' %}">
+{% endblock %}
 
 {% block dashboard_content %}
 <h2>Мой профиль</h2>

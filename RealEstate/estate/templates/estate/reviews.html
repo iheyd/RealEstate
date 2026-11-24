@@ -1,10 +1,17 @@
 {% extends 'estate/base.html' %}
+{% load static %}
+
 {% block title %}Отзывы и обратная связь{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/reviews.css' %}">
+{% endblock %}
+
 {% block content %}
     <h1>Отзывы наших клиентов</h1>
-    <p>Мы ценим ваше мнение! Оставьте свой отзыв или предложение, и мы обязательно его рассмотрим.</p>
+    <p class="reviews-intro">Мы ценим ваше мнение! Оставьте свой отзыв или предложение, и мы обязательно его рассмотрим.</p>
 
-    <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-top: 30px;">
+    <div class="feedback-box">
         <h3>Форма обратной связи</h3>
         <form method="post">
             {% csrf_token %}

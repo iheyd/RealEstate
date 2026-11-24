@@ -3,43 +3,47 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'estate/css/dashboard.css' %}">
+    {% block dashboard_page_css %}{% endblock %}
 {% endblock %}
 
 {% block content %}
 <div class="dashboard-layout">
-    <!-- ЛЕВОЕ МЕНЮ -->
     <aside class="sidebar">
         <h3>Личный кабинет</h3>
         <ul class="sidebar-menu">
             <li>
-                <a href="{% url 'dashboard_profile' %}"
-                   class="{% if active_tab == 'profile' %}active{% endif %}">
+                <a href="{% url 'dashboard_profile' %}" class="{% if active_tab == 'profile' %}active{% endif %}">
                     👤 Мой профиль
                 </a>
             </li>
 
-            {% if user.profile.role == 'admin' %}
+            {% if user.profile.role == 'owner' and user.profile.is_approved %}
             <li>
-                <a href="{% url 'dashboard_estates' %}"
-                   class="{% if active_tab == 'estates' %}active{% endif %}">
+                <a href="{% url 'dashboard_estates' %}" class="{% if active_tab == 'estates' %}active{% endif %}">
                     🏠 Объявления
                 </a>
             </li>
             {% endif %}
 
             <li>
-                <a href="{% url 'dashboard_requests' %}"
-                   class="{% if active_tab == 'requests' %}active{% endif %}">
+                <a href="{% url 'dashboard_requests' %}" class="{% if active_tab == 'requests' %}active{% endif %}">
                     📋 Заявки на просмотр
                 </a>
             </li>
 
             <li>
-                <a href="{% url 'dashboard_deals' %}"
-                   class="{% if active_tab == 'deals' %}active{% endif %}">
+                <a href="{% url 'dashboard_deals' %}" class="{% if active_tab == 'deals' %}active{% endif %}">
                     📄 Сделки
                 </a>
             </li>
+
+            {% if user.is_superuser %}
+            <li>
+                <a href="{% url 'dashboard_moderation' %}" class="{% if active_tab == 'moderation' %}active{% endif %}">
+                    🛡️ Модерация владельцев
+                </a>
+            </li>
+            {% endif %}
 
             <li class="logout-item">
                 <form action="{% url 'logout' %}" method="post">
@@ -50,7 +54,6 @@
         </ul>
     </aside>
 
-    <!-- ПРАВЫЙ КОНТЕНТ -->
     <main class="main-content">
         {% block dashboard_content %}{% endblock %}
     </main>

@@ -4,220 +4,233 @@
 {% block title %}{{ estate.title }}{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'estate/css/listings.css' %}">
-    <style>
-        /* Детальная страница объявления */
-        .detail-container {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        .detail-gallery {
-            flex: 2;
-            min-width: 300px;
-        }
-        .detail-main-image {
-            width: 100%;
-            height: 450px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            background: #f5f5f5;
-        }
-        .detail-thumbnails {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-        .detail-thumbnails img {
-            width: 90px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 4px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s, border 0.2s;
-            border: 2px solid transparent;
-        }
-        .detail-thumbnails img:hover,
-        .detail-thumbnails img.active {
-            opacity: 1;
-            border: 2px solid #0054FD;
-        }
-        .detail-info {
-            flex: 1;
-            min-width: 280px;
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 8px;
-            align-self: flex-start;
-        }
-        .detail-info h1 {
-            font-size: 1.6em;
-            border-bottom: none;
-            padding-bottom: 0;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        .detail-price {
-            font-size: 2em;
-            font-weight: bold;
-            color: #0054FD;
-            margin: 15px 0;
-        }
-        .detail-params {
-            font-size: 1.05em;
-            color: #555;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        .detail-description {
-            margin: 20px 0;
-            line-height: 1.7;
-            color: #444;
-        }
-        .detail-description h3 {
-            margin-bottom: 10px;
-        }
-        .btn-disabled {
-            background: #ccc;
-            color: #666;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: not-allowed;
-            width: 100%;
-            text-align: center;
-            display: block;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .edit-link {
-            display: inline-block;
-            margin-top: 15px;
-            color: #0054FD;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .edit-link:hover {
-            text-decoration: underline;
-        }
-        .no-image-large {
-            width: 100%;
-            height: 450px;
-            background: #f5f5f5;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-        .status-available { background: #d4edda; color: #155724; }
-        .status-rented { background: #f8d7da; color: #721c24; }
-
-        @media (max-width: 768px) {
-            .detail-container { flex-direction: column; }
-            .detail-main-image, .no-image-large { height: 300px; }
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'estate/css/listing_detail.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="detail-container">
-    <!-- ЛЕВАЯ ЧАСТЬ: ГАЛЕРЕЯ -->
-    <div class="detail-gallery">
-        {% if estate.images.all %}
-            <img id="mainImage" class="detail-main-image"
-                 src="{{ estate.images.first.image.url }}"
-                 alt="{{ estate.title }}">
-            {% if estate.images.all|length > 1 %}
-                <div class="detail-thumbnails">
-                    {% for img in estate.images.all %}
-                        <img src="{{ img.image.url }}"
-                             class="thumb {% if forloop.first %}active{% endif %}"
-                             onclick="changeImage(this, '{{ img.image.url }}')"
-                             alt="Фото {{ forloop.counter }}">
-                    {% endfor %}
+<div class="listing-detail-page">
+    <div class="listing-detail-layout">
+        <div class="listing-main-content">
+            <div class="listing-header">
+                <h1 class="listing-title">{{ estate.title }}</h1>
+                <div class="listing-address">
+                    📍 {{ estate.location }}
                 </div>
-            {% endif %}
-        {% else %}
-            <div class="no-image-large">📷 Фотографии отсутствуют</div>
-        {% endif %}
-    </div>
+            </div>
 
-    <!-- ПРАВАЯ ЧАСТЬ: ИНФОРМАЦИЯ -->
-    <div class="detail-info">
-        <span class="status-badge {% if estate.status == 'available' %}status-available{% else %}status-rented{% endif %}">
-            {{ estate.get_status_display }}
-        </span>
+            <div class="listing-gallery">
+                {% if estate.images.all %}
+                    <div class="gallery-main-wrapper">
+                        <img id="mainImage" class="gallery-main-image"
+                             src="{{ estate.images.first.image.url }}"
+                             alt="{{ estate.title }}">
 
-        <h1>{{ estate.title }}</h1>
-        <div class="detail-price">{{ estate.price|floatformat:0 }} ₽</div>
+                        {% if estate.images.all|length > 1 %}
+                            <div class="gallery-photo-count">
+                                📷 {{ estate.images.all|length }} фото
+                            </div>
+                        {% endif %}
 
-        <div class="detail-params">
-            📐 <strong>{{ estate.area }} м²</strong><br>
-            🏢 <strong>{{ estate.floor }} этаж</strong><br>
-            📍 <strong>{{ estate.location }}</strong>
+                        {% if estate.images.all|length > 1 %}
+                            <button class="gallery-nav gallery-nav-prev" id="prevBtn" type="button">‹</button>
+                            <button class="gallery-nav gallery-nav-next" id="nextBtn" type="button">›</button>
+                        {% endif %}
+                    </div>
+
+                    {% if estate.images.all|length > 1 %}
+                        <div class="gallery-thumbnails" id="thumbnails">
+                            {% for img in estate.images.all %}
+                                <img src="{{ img.image.url }}"
+                                     class="gallery-thumb {% if forloop.first %}active{% endif %}"
+                                     data-index="{{ forloop.counter0 }}"
+                                     alt="Фото {{ forloop.counter }}">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="no-image-large">📷 Фотографии отсутствуют</div>
+                {% endif %}
+            </div>
+
+            <div class="listing-features">
+                <div class="feature-item">
+                    <div class="feature-icon">📐</div>
+                    <div class="feature-info">
+                        <div class="feature-label">Общая площадь</div>
+                        <div class="feature-value">{{ estate.area }} м²</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🏢</div>
+                    <div class="feature-info">
+                        <div class="feature-label">Этаж</div>
+                        <div class="feature-value">{{ estate.floor }}</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📍</div>
+                    <div class="feature-info">
+                        <div class="feature-label">Местоположение</div>
+                        <div class="feature-value">{{ estate.location }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="listing-description">
+                <h2>Описание</h2>
+                <div class="description-text">
+                    {{ estate.description|linebreaksbr }}
+                </div>
+            </div>
         </div>
 
-        <hr>
+        <div class="listing-sidebar">
+            <div class="sidebar-card">
+                {% if user.is_authenticated and user == estate.owner and user.profile.role == 'owner' and user.profile.is_approved %}
+                    <a href="{% url 'edit_estate' estate.id %}" class="edit-card-icon" title="Редактировать">✏️</a>
+                {% endif %}
+                <div class="sidebar-price">
+                    <span class="price-value">{{ estate.price|floatformat:0 }} ₽</span>
+                    {% if estate.status == 'available' %}
+                        <span class="price-status">/мес.</span>
+                    {% endif %}
+                </div>
 
-        <div class="detail-description">
-            <h3>Описание</h3>
-            <p>{{ estate.description|linebreaksbr }}</p>
+                <div class="sidebar-status">
+                    <span class="status-badge {% if estate.status == 'available' %}status-available{% else %}status-rented{% endif %}">
+                        {{ estate.get_status_display }}
+                    </span>
+                </div>
+
+                <div class="sidebar-actions">
+                    {% if user.is_authenticated and user.profile.role == 'client' %}
+                        {% if user_confirmed_request %}
+                            <div class="reserve-box reserve-box-confirmed">
+                                <p class="reserve-title">
+                                    ✅ У вас есть подтверждённый резерв
+                                </p>
+                                <p class="reserve-date">
+                                    Дата: {{ user_confirmed_request.viewing_date|date:"d.m.Y в H:i" }}
+                                </p>
+                                <form method="post" action="{% url 'cancel_request' user_confirmed_request.id %}" class="reserve-cancel-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="reserve-cancel-btn" onclick="return confirm('Отменить резерв?')">
+                                        ✕ Отменить резерв
+                                    </button>
+                                </form>
+                            </div>
+                        {% elif user_pending_request %}
+                            <div class="reserve-box reserve-box-pending">
+                                <p class="reserve-title">
+                                    ⏳ Заявка ожидает подтверждения
+                                </p>
+                                <p class="reserve-date">
+                                    Дата: {{ user_pending_request.viewing_date|date:"d.m.Y в H:i" }}
+                                </p>
+                                <form method="post" action="{% url 'cancel_request' user_pending_request.id %}" class="reserve-cancel-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="reserve-cancel-btn" onclick="return confirm('Отменить заявку?')">
+                                        ✕ Отменить заявку
+                                    </button>
+                                </form>
+                            </div>
+                        {% elif estate.is_reserved %}
+                            <button class="action-btn action-btn-disabled" disabled>🔒 Зарезервировано</button>
+                        {% elif estate.status == 'rented' %}
+                            <button class="action-btn action-btn-disabled" disabled>🔒 Сдано</button>
+                        {% else %}
+                            <a href="{% url 'request_viewing' estate.id %}" class="action-btn action-btn-primary">
+                                📅 Записаться на просмотр
+                            </a>
+                        {% endif %}
+                    {% elif not user.is_authenticated %}
+                        <a href="{% url 'login' %}" class="action-btn action-btn-primary">
+                            Войдите, чтобы записаться
+                        </a>
+                    {% endif %}
+                </div>
+
+                <div class="sidebar-info">
+                    <div class="info-row">
+                        <span class="info-label">Оплата ЖКХ</span>
+                        <span class="info-value">{{ estate.get_utilities_included_display }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Залог</span>
+                        <span class="info-value">{{ estate.deposit|floatformat:0 }} ₽</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Предоплата</span>
+                        <span class="info-value">{{ estate.get_prepayment_display }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Срок аренды</span>
+                        <span class="info-value">{{ estate.get_lease_term_display }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-card owner-card">
+                <div class="owner-info">
+                    <div class="owner-avatar">👤</div>
+                    <div class="owner-details">
+                        <div class="owner-name">{{ estate.owner.get_full_name|default:estate.owner.username }}</div>
+                        <div class="owner-role">Владелец недвижимости</div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <hr>
-
-        <!-- Действия для клиента -->
-        {% if user.is_authenticated and user.profile.role == 'client' %}
-            {% if estate.is_reserved %}
-                <button class="btn-disabled" disabled>🔒 Резерв</button>
-                <p style="color: #888; font-size: 13px; margin-top: 10px; text-align: center;">
-                    На этот объект уже подана заявка на просмотр.
-                </p>
-            {% elif estate.status == 'rented' %}
-                <button class="btn-disabled" disabled>🔒 Сдано</button>
-            {% else %}
-                <a href="{% url 'request_viewing' estate.id %}" class="btn-submit" style="width: 100%; text-align: center; display: block;">
-                    📅 Записаться на просмотр
-                </a>
-            {% endif %}
-        {% elif not user.is_authenticated %}
-            <p style="text-align: center; color: #666;">
-                <a href="{% url 'login' %}">Войдите</a> в систему, чтобы записаться на просмотр.
-            </p>
-        {% endif %}
-
-        <!-- Карандаш для админа-владельца -->
-        {% if user.is_authenticated and user.profile.role == 'admin' and user == estate.owner %}
-            <a href="{% url 'edit_estate' estate.id %}" class="edit-link">
-                ✏️ Редактировать объявление
-            </a>
-        {% endif %}
     </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    function changeImage(thumb, src) {
-        document.getElementById('mainImage').src = src;
-        document.querySelectorAll('.thumb').forEach(function(t) {
-            t.classList.remove('active');
+document.addEventListener('DOMContentLoaded', function() {
+    const thumbElements = document.querySelectorAll('.gallery-thumb');
+    const images = [];
+    thumbElements.forEach(function(thumb) {
+        images.push(thumb.src);
+    });
+
+    if (images.length === 0) return;
+
+    let currentIndex = 0;
+    const mainImage = document.getElementById('mainImage');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateGallery(index) {
+        if (images.length === 0) return;
+        if (index < 0) index = images.length - 1;
+        if (index >= images.length) index = 0;
+        currentIndex = index;
+        if (mainImage) mainImage.src = images[currentIndex];
+        thumbElements.forEach(function(thumb, i) {
+            thumb.classList.toggle('active', i === currentIndex);
         });
-        thumb.classList.add('active');
     }
+
+    if (prevBtn) prevBtn.addEventListener('click', function(e) { e.preventDefault(); updateGallery(currentIndex - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function(e) { e.preventDefault(); updateGallery(currentIndex + 1); });
+    thumbElements.forEach(function(thumb, index) {
+        thumb.addEventListener('click', function(e) { e.preventDefault(); updateGallery(index); });
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') updateGallery(currentIndex - 1);
+        if (e.key === 'ArrowRight') updateGallery(currentIndex + 1);
+    });
+
+    let touchStartX = 0;
+    if (mainImage) {
+        mainImage.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        mainImage.addEventListener('touchend', function(e) {
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if (diff > 50) updateGallery(currentIndex + 1);
+            if (diff < -50) updateGallery(currentIndex - 1);
+        }, { passive: true });
+    }
+});
 </script>
 {% endblock %}

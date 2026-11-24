@@ -1,0 +1,82 @@
+/* ==========================================
+   reviews.css
+   Стили для страницы отзывов (reviews.html)
+   ========================================== */
+
+.reviews-intro {
+    color: #555;
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+
+/* Блок формы обратной связи */
+.feedback-box {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    margin-top: 30px;
+}
+
+.feedback-box h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 1.2em;
+    border-bottom: 2px solid #0054FD;
+    padding-bottom: 8px;
+}
+
+/* Поля формы (Django as_p оборачивает в <p>) */
+.feedback-box p {
+    margin-bottom: 15px;
+}
+
+.feedback-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.feedback-box input,
+.feedback-box textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.feedback-box input:focus,
+.feedback-box textarea:focus {
+    outline: none;
+    border-color: #0054FD;
+    box-shadow: 0 0 0 3px rgba(0, 84, 253, 0.1);
+}
+
+.feedback-box textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.feedback-box .errorlist {
+    color: #e74c3c;
+    list-style-type: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    font-size: 13px;
+}
+
+.feedback-box .btn-submit {
+    margin-top: 5px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .feedback-box {
+        padding: 18px;
+    }
+}

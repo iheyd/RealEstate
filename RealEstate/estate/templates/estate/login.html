@@ -4,9 +4,7 @@
 {% block title %}Вход в систему{% endblock %}
 
 {% block extra_css %}
-    <!-- Общие стили карточки и полей -->
-    <link rel="stylesheet" href="{% static 'estate/css/register.css' %}">
-    <!-- Доработки именно для страницы входа -->
+    <link rel="stylesheet" href="{% static 'estate/css/auth.css' %}">
     <link rel="stylesheet" href="{% static 'estate/css/login.css' %}">
 {% endblock %}
 
@@ -14,12 +12,17 @@
 <div class="auth-wrapper">
     <div class="auth-card login-card">
 
-        <h1 class="auth-title">Вход</h1>
-        <p class="auth-subtitle">Войдите в аккаунт, чтобы продолжить работу с недвижимостью.</p>
+        <h1 class="auth-title">С возвращением!</h1>
+        <p class="auth-subtitle">Войдите в аккаунт, чтобы продолжить работу.</p>
 
         {% if form.errors %}
             <div class="form-errors">
-                <p>Неверный логин или пароль. Попробуйте ещё раз.</p>
+                {% for error in form.non_field_errors %}
+                    <p>⚠️ {{ error }}</p>
+                {% endfor %}
+                {% if not form.non_field_errors %}
+                    <p>Неверный логин или пароль. Попробуйте ещё раз.</p>
+                {% endif %}
             </div>
         {% endif %}
 
@@ -36,7 +39,6 @@
                 {{ form.password }}
             </div>
 
-            <!-- Возвращает пользователя туда, откуда он пришёл -->
             <input type="hidden" name="next" value="{{ next }}">
 
             <button type="submit" class="btn-submit auth-submit">Войти</button>

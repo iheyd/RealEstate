@@ -5,6 +5,7 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'estate/css/form_estate.css' %}">
+    <link rel="stylesheet" href="{% static 'estate/css/gallery_editor.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -74,47 +75,123 @@
                 {% if form.description.errors %}
                     <ul class="errorlist">{% for e in form.description.errors %}<li>{{ e }}</li>{% endfor %}</ul>
                 {% endif %}
-                <small class="helptext">Расскажите подробнее об объекте: особенности планировки, ремонт, инфраструктура рядом.</small>
+                <small class="helptext">Расскажите подробнее об объекте.</small>
+            </div>
+        </div>
+        <!-- УСЛОВИЯ АРЕНДЫ -->
+        <div class="form-section">
+            <h3>📑 Условия аренды</h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_utilities_included">Оплата ЖКХ</label>
+                    {{ form.utilities_included }}
+                    {% if form.utilities_included.errors %}
+                        <ul class="errorlist">{% for e in form.utilities_included.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_deposit">Залог (₽)</label>
+                    {{ form.deposit }}
+                    {% if form.deposit.errors %}
+                        <ul class="errorlist">{% for e in form.deposit.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_prepayment">Предоплата</label>
+                    {{ form.prepayment }}
+                    {% if form.prepayment.errors %}
+                        <ul class="errorlist">{% for e in form.prepayment.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_lease_term">Срок аренды</label>
+                    {{ form.lease_term }}
+                    {% if form.lease_term.errors %}
+                        <ul class="errorlist">{% for e in form.lease_term.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
-        <!-- ФОТОГРАФИИ -->
+
+        <!-- РЕДАКТОР ГАЛЕРЕИ (только при редактировании) -->
+        {% if existing_images %}
         <div class="form-section">
-            <h3>📷 Фотографии объекта</h3>
+            <h3>🖼️ Редактор фотографий</h3>
             <p class="section-hint">
-                Загрузите несколько фотографий. Отметьте одно из них как «Главное» — оно будет отображаться в списке объявлений.
+                Кликайте по миниатюрам для просмотра. Отмечайте главное фото и удаляйте ненужные.
             </p>
 
-            {{ formset.management_form }}
+            <div class="gallery-editor">
+                <!-- Большое превью -->
+                <div class="editor-preview">
+                    <img id="editorMainImage" src="{{ existing_images.first.image.url }}" alt="Превью">
+                    <div class="preview-info">
+                        <span class="preview-counter">1 / {{ existing_images|length }}</span>
+                        <span class="preview-status" id="mainStatus">
+                            {% if existing_images.first.is_main %}⭐ Главное фото{% endif %}
+                        </span>
+                    </div>
+                </div>
 
-            <div class="photo-formset">
-                {% for img_form in formset %}
-                    <div class="photo-form-item">
-                        <div class="photo-field">
-                            <label>Фото {{ forloop.counter }}</label>
-                            {{ img_form.image }}
-                            {% if img_form.image.errors %}
-                                <ul class="errorlist">
-                                    {% for error in img_form.image.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
+                <!-- Сетка миниатюр с управлением -->
+                <div class="editor-thumbnails">
+                    {% for img in existing_images %}
+                        <div class="editor-thumb-item {% if forloop.first %}active{% endif %}"
+                             data-url="{{ img.image.url }}"
+                             data-id="{{ img.id }}"
+                             data-is-main="{% if img.is_main %}true{% else %}false{% endif %}">
+
+                            <img src="{{ img.image.url }}" alt="Фото {{ forloop.counter }}">
+
+                            <!-- Overlay с кнопками управления -->
+                            <div class="thumb-controls">
+                                <button type="button" class="control-btn btn-set-main" title="Сделать главным">
+                                    ⭐
+                                </button>
+                                <button type="button" class="control-btn btn-delete" title="Удалить">
+                                    🗑️
+                                </button>
+                            </div>
+
+                            <!-- Скрытые поля для формы -->
+                            <input type="checkbox" name="delete_image" value="{{ img.id }}" class="delete-checkbox" style="display: none;">
+                            <input type="checkbox" name="main_image" value="{{ img.id }}" class="main-checkbox" style="display: none;" {% if img.is_main %}checked{% endif %}>
+
+                            <!-- Индикатор главного фото -->
+                            {% if img.is_main %}
+                                <div class="main-indicator">⭐</div>
                             {% endif %}
                         </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
-                        <div class="checkbox-field">
-                            {{ img_form.is_main }}
-                            <label for="{{ img_form.is_main.id_for_label }}">Главное</label>
-                        </div>
+        <!-- ЗАГРУЗКА НОВЫХ ФОТО -->
+        <div class="form-section">
+            <h3>📷 Добавить новые фотографии</h3>
+            <p class="section-hint">
+                {% if existing_images %}
+                    Новые фото добавятся к существующим.
+                {% else %}
+                    Выберите несколько фотографий. Первое станет главным.
+                {% endif %}
+            </p>
 
-                        {% if img_form.instance.pk %}
-                            <div class="delete-field">
-                                {{ img_form.DELETE }}
-                                <label for="{{ img_form.DELETE.id_for_label }}">Удалить</label>
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
+            <div class="upload-zone" id="uploadZone">
+                <input type="file" name="images" id="id_images" multiple accept="image/*" class="file-input-hidden">
+                <label for="id_images" class="upload-label">
+                    <span class="upload-icon">📁</span>
+                    <span class="upload-text">Нажмите, чтобы выбрать файлы</span>
+                    <span class="upload-hint">JPG, PNG, WEBP до 10 МБ</span>
+                </label>
+                <div class="preview-grid" id="previewGrid"></div>
             </div>
         </div>
 
@@ -125,4 +202,142 @@
         </div>
     </form>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // === РЕДАКТОР ГАЛЕРЕИ ===
+    const thumbItems = document.querySelectorAll('.editor-thumb-item');
+    const mainImage = document.getElementById('editorMainImage');
+    const previewCounter = document.querySelector('.preview-counter');
+    const mainStatus = document.getElementById('mainStatus');
+
+    if (thumbItems.length > 0 && mainImage) {
+        let currentIndex = 0;
+
+        function updatePreview(index) {
+            if (index < 0 || index >= thumbItems.length) return;
+            currentIndex = index;
+
+            const item = thumbItems[index];
+            mainImage.src = item.dataset.url;
+            previewCounter.textContent = (index + 1) + ' / ' + thumbItems.length;
+
+            // Обновляем статус главного фото
+            if (item.dataset.isMain === 'true') {
+                mainStatus.textContent = '⭐ Главное фото';
+                mainStatus.style.display = 'inline';
+            } else {
+                mainStatus.textContent = '';
+            }
+
+            // Подсвечиваем активную миниатюру
+            thumbItems.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        // Клик по миниатюре — показать в превью
+        thumbItems.forEach((item, index) => {
+            item.addEventListener('click', function(e) {
+                // Игнорируем клики по кнопкам управления
+                if (e.target.closest('.control-btn')) return;
+                updatePreview(index);
+            });
+        });
+
+        // Кнопка "Сделать главным"
+        document.querySelectorAll('.btn-set-main').forEach((btn, index) => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+
+                // Снимаем отметку со всех
+                thumbItems.forEach(item => {
+                    item.dataset.isMain = 'false';
+                    const mainCheckbox = item.querySelector('.main-checkbox');
+                    if (mainCheckbox) mainCheckbox.checked = false;
+                    const indicator = item.querySelector('.main-indicator');
+                    if (indicator) indicator.remove();
+                });
+
+                // Ставим отметку на текущее
+                const item = thumbItems[index];
+                item.dataset.isMain = 'true';
+                const mainCheckbox = item.querySelector('.main-checkbox');
+                if (mainCheckbox) mainCheckbox.checked = true;
+
+                // Добавляем индикатор
+                const indicator = document.createElement('div');
+                indicator.className = 'main-indicator';
+                indicator.textContent = '⭐';
+                item.appendChild(indicator);
+
+                updatePreview(index);
+            });
+        });
+
+        // Кнопка "Удалить"
+        document.querySelectorAll('.btn-delete').forEach((btn, index) => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+
+                const item = thumbItems[index];
+                const deleteCheckbox = item.querySelector('.delete-checkbox');
+
+                if (deleteCheckbox) {
+                    deleteCheckbox.checked = !deleteCheckbox.checked;
+
+                    if (deleteCheckbox.checked) {
+                        item.style.opacity = '0.3';
+                        item.style.border = '2px dashed #e74c3c';
+                    } else {
+                        item.style.opacity = '1';
+                        item.style.border = '';
+                    }
+                }
+            });
+        });
+    }
+
+    // === ПРЕДПРОСМОТР НОВЫХ ФОТО ===
+    const fileInput = document.getElementById('id_images');
+    const previewGrid = document.getElementById('previewGrid');
+
+    if (fileInput && previewGrid) {
+        fileInput.addEventListener('change', function() {
+            previewGrid.innerHTML = '';
+            Array.from(fileInput.files).forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'preview-item';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        ${index === 0 ? '<span class="main-badge">Новое</span>' : ''}
+                    `;
+                    previewGrid.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Drag & Drop
+        const uploadZone = document.getElementById('uploadZone');
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('drag-over');
+        });
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('drag-over');
+        });
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('drag-over');
+            fileInput.files = e.dataTransfer.files;
+            fileInput.dispatchEvent(new Event('change'));
+        });
+    }
+});
+</script>
 {% endblock %}

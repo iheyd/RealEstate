@@ -12,6 +12,7 @@ nav .auth .auth-btn { background-color: #ffffff; color: #0054FD; padding: 8px 20
 nav .auth .auth-btn:hover { background-color: #e6e6e6; color: #0054FD; border-color: #e6e6e6; }
 nav .auth button { background: none; border: 1px solid #ffffff; color: #ffffff; padding: 7px 15px; border-radius: 4px; cursor: pointer; font-size: 15px; transition: background-color 0.3s; }
 nav .auth button:hover { background-color: #ffffff; color: #0054FD; }
+nav .auth .logout-form { display: inline; }
 
 .container { max-width: 1100px; margin: 30px auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
 

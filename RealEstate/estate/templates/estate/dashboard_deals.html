@@ -1,5 +1,12 @@
 {% extends 'estate/dashboard_base.html' %}
+{% load static %}
+
 {% block title %}Сделки{% endblock %}
+
+{% block dashboard_page_css %}
+    <link rel="stylesheet" href="{% static 'estate/css/dashboard_deals.css' %}">
+{% endblock %}
+
 {% block dashboard_content %}
     <h2>Мои сделки (Договоры аренды)</h2>
     {% if deals %}
@@ -22,6 +29,6 @@
             </tbody>
         </table>
     {% else %}
-        <p>У вас пока нет заключенных договоров.</p>
+        <div class="deals-empty">У вас пока нет заключенных договоров.</div>
     {% endif %}
 {% endblock %}
