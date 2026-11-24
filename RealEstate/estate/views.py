@@ -29,7 +29,7 @@ class CustomLoginView(LoginView):
         if hasattr(user, 'profile') and not user.profile.can_login:
             messages.error(
                 self.request,
-                'Ваш аккаунт владельца находится на модерации. '
+                'Ваш аккаунт находится на модерации. '
                 'Вы не сможете войти в систему, пока администратор не подтвердит вашу регистрацию.'
             )
             form.add_error(None, "Аккаунт на модерации")
